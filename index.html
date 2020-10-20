@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Length unit coverter</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Chelsea+Market&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300;700&display=swap');
+
+*{
+    box-sizing:border-box;
+    transition-duration:0.2s;
+}
+body {
+    padding-top:10px;
+    background-color:#010101;
+    color:white;
+}
+#contain{
+    border-style:none none solid none;
+}
+#input_ , #result{
+    width:100%;
+    background-color:transparent;
+    height:15vh;
+    margin:5px 0;
+    text-align:right;
+    overflow-x:scroll;
+    overflow-y:hidden;
+    font-size:30px;
+    font-family: 'Open Sans Condensed', sans-serif;
+    padding-top:calc(7.5vh - 20px);
+    padding-right:10px;
+    padding-left:10px;
+}
+select , label{
+    font-size:20px;
+    color:#fbfbfb;
+}
+label{
+    float:left;
+    font-family: 'Chelsea Market', cursive;
+    padding-left:10px;
+}
+#selected_unit , #required_unit{
+    float:left;
+    background-color:transparent;
+    border-style:none;
+    outline:none;
+    font-family: 'Chelsea Market', cursive;
+    width:40%;
+    padding-left:10px;
+}
+.keypad{
+    height:50vh;
+    width:100%;
+    background-color:translate;
+    display:grid;
+    grid-template-columns: auto auto auto auto;
+    grid-column-gap:3vh;
+    grid-row-gap:3vh;
+    padding:10px;
+    border-style:none;
+    padding-top:10px;
+}
+.keypad > div{
+    background-color:#1f1f1f;
+    text-align:center;
+    border-radius:500px;
+    font-size:25px;
+    line-height:200%;
+    font-family: 'Anton', sans-serif;
+}
+.keypad > div:active{
+    background-color:orange;
+}
+.keypad > div:nth-child(15){
+    grid-column:3 / 5;
+}
+#btn{
+    font-family:none;
+    font-size:10px;
+    color:lime;
+    font-weight:bold;
+    border-radius:50%;
+}            
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <body>
+    
+      <div id="contain">
+        <label for="selected_unit">From</label>
+        <select id="selected_unit">
+          <optgroup label="Metric system">
+            <option value="Gm">gigametre</option>
+            <option value="Mm">megametre</option>
+            <option value="km">kilometre</option>
+            <option value="hm">hectometre</option>
+            <option value="dam">decametre</option>
+            <option value="m">metre</option>
+            <option value="dm">decimetre</option>
+            <option value="cm">centimetre</option>
+            <option value="mm">millimetre</option>
+            <option value="um">micrometre</option>
+            <option value="nm">nanometre</option>
+          </optgroup>
+        </select>
+        <div id="input_" >
+            <span id="input__">0</span>
+            <span id="sy"></span>
+        </div>
+        
+        
+        <hr>
+        <label for="required_unit">To</label>
+        <select id="required_unit">
+            <option value="Gm">gigametre</option>
+            <option value="Mm">megametre</option>
+            <option value="km">kilometre</option>
+            <option value="hm">hectometre</option>
+            <option value="dam">decametre</option>
+            <option value="m">metre</option>
+            <option value="dm">decimetre</option>
+            <option value="cm">centimetre</option>
+            <option value="mm">millimetre</option>
+            <option value="um">micrometre</option>
+            <option value="nm">nanometre</option>
+        </select>
+        <div id="result">0</div>
+      </div>
+        
+        
+        <div class="keypad">
+            <div onclick="append_n(9)">9</div>
+            <div onclick="append_n(8)">8</div>
+            <div onclick="append_n(7)">7</div>
+            <div onclick="del_elemn()">⌫</div>
+            <div onclick="append_n(6)">6</div>
+            <div onclick="append_n(5)">5</div>
+            <div onclick="append_n(4)">4</div>
+            <div onclick="all_clear()">AC</div>
+            <div onclick="append_n(3)">3</div>
+            <div onclick="append_n(2)">2</div>
+            <div onclick="append_n(1)">1</div>
+            <div onclick="change_bg()" id="chc">
+                Dark<sup id="btn"> on</sup>
+            </div>
+            <div onclick="append_n('.')">•</div>
+            <div onclick="append_n(0)">0</div>
+            <div onclick="calc_fial()">=</div>
+        </div>
+        <script>
+var list = [];
+function append_n(val){
+    list.push(val);
+    $("#input__").html(list);
+}
+function del_elemn(){
+    list.pop();
+    $("#input__").html(list);
+    if (list.length == 0){
+        $("#input__").html(0);
+    }
+}
+
+function all_clear(){
+    list = [];
+    $("#input__").html(list);
+    $("#input__").html(0);
+}
+function calc_fial(){
+    let selected = $("#selected_unit").val();
+    let required = $("#required_unit").val();
+    let unit = parseFloat(list.join(""));
+    let raw_unit , pro_unit;
+    switch(selected){
+        case "Gm":
+        raw_unit = unit * 1000000000
+        break;
+        
+        case "Mm":
+        raw_unit = unit * 1000000
+        break;
+        
+        case "km":
+        raw_unit = unit * 1000
+        break;
+        
+        case "hm":
+        raw_unit = unit * 100
+        break;
+        
+        case "dam":
+        raw_unit = unit * 10
+        break;
+        
+        case "m":
+        raw_unit = unit
+        break;
+        
+        case "dm":
+        raw_unit = unit / 10
+        break;
+        
+        case "cm":
+        raw_unit = unit / 100
+        break;
+        
+        case "mm":
+        raw_unit = unit / 1000
+        break;
+        
+        case "um":
+        raw_unit = unit / 1000000
+        break;
+        
+        case "nm":
+        raw_unit = unit / 1000000000
+        break;
+        
+    }
+    
+    switch(required){
+       
+        case "Gm":
+        pro_unit = raw_unit / 1000000000 + " Gm"
+        break;
+        
+        case "Mm":
+        pro_unit = raw_unit / 1000000 + " Mm"
+        break;
+        
+        case "km":
+        pro_unit = raw_unit / 1000 + " Km"
+        break;
+        
+        case "hm":
+        pro_unit = raw_unit / 100 + " m"
+        break;
+        
+        case "dam":
+        pro_unit = raw_unit / 10 + " dam"
+        break;
+        
+        case "m":
+        pro_unit = raw_unit + " m"
+        break;
+        
+        case "dm":
+        pro_unit = raw_unit * 10 + " dm"
+        break;
+        
+        case "cm":
+        pro_unit = raw_unit * 100 + " cm"
+        break;
+        
+        case "mm":
+        pro_unit = raw_unit * 1000 + " mm"
+        break;
+        
+        case "um":
+        pro_unit = raw_unit * 1000000 + " um"
+        break;
+        
+        case "nm":
+        pro_unit = raw_unit * 1000000000 + " nm"
+        break;
+    }
+    
+    if (pro_unit.includes("NaN")){
+        $("#result").html("0");
+    }
+    else{
+        $("#result").html(pro_unit);
+    }
+}
+
+function Auto(){
+    let selected = $("#selected_unit").val();
+    $("#sy").html(selected);
+}
+setInterval(Auto,0);
+
+var x = 0
+function change_bg(){
+    if (x==0){
+       $("body").css({
+            "background":"white",
+            "color":"black"
+        });
+        $(".keypad > div").css("background","gray");
+        $("select , label").css("color","black");
+        $("hr").css("background","black");
+        $("#btn").html("off");
+        $("#btn").css("color","red");
+        x = 1;
+        
+    }
+    else{
+        $("body").css({
+            "background":"#010101",
+            "color":"#fbfbfb"
+        });
+        $(".keypad > div").css("background","#1f1f1f");
+        $("select , label").css("color","#fbfbfb");
+        $("hr").css("background","white");
+        $("#btn").html("on");
+        $("#btn").css("color","lime");
+        x = 0;
+    }
+}            
+        </script>
+    </body>
+</html>
